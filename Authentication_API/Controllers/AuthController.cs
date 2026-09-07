@@ -11,7 +11,8 @@ using System.Security.Claims;
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : Controller
-{
+{  //https://andrewlock.net/exploring-the-asp-net-core-identity-passwordhasher/
+
     private readonly AppDbContext _context;
     private readonly PasswordHasher<User> _hasher = new(); //in built salt and hasher 
 
@@ -65,14 +66,14 @@ public class AuthController : Controller
          * Later on when a logged in persons role needs to be checked, this will be referred to */
         var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-        /* Step 4:  This makes the API server attach a "Set-Cookie" header to its HTTP response
+        /* Step 4: This makes the API server attach a "Set-Cookie" header to its HTTP response
          * and create a cookie with the encrypted details of the user */
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
         return Ok("Logged in");
     }
 
-    [HttpPost("logout")]
+    [HttpPost("logout")] //clears the users cookie
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
