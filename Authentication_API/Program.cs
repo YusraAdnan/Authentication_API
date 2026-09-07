@@ -18,19 +18,7 @@ namespace Authentication_API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.Events.OnRedirectToLogin = context =>
-                    {
-                        context.Response.StatusCode = 401;
-                        return Task.CompletedTask;
-                    };
-                    options.Events.OnRedirectToAccessDenied = context =>
-                    {
-                        context.Response.StatusCode = 403;
-                        return Task.CompletedTask;
-                    };
-                });
+                .AddCookie();
 
             builder.Services.AddAuthorization();
             builder.Services.AddEndpointsApiExplorer();
@@ -41,8 +29,8 @@ namespace Authentication_API
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseAuthentication();
-            app.UseAuthorization();
+            app.UseAuthentication();//Add this - Who is this?
+            app.UseAuthorization(); //And this - Are they allowed to do this?
             app.MapControllers();
             app.Run();
         }
