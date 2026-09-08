@@ -8,8 +8,6 @@ namespace Authentication_API
     {
         public static void Main(string[] args)
         {
-       
-
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
@@ -21,16 +19,25 @@ namespace Authentication_API
                 .AddCookie();
 
             builder.Services.AddAuthorization();
+
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-            app.UseAuthentication();//Add this - Who is this?
-            app.UseAuthorization(); //And this - Are they allowed to do this?
+            //2 guards set up that check at every request before it reaches controllers
+            app.UseAuthentication();/* Guard 1 - Who is this? Looks at the incoming request's Cookie header
+                                    if there is, decrypts it and uses it to set who the current request's user is (teacher/student) */
+
+            app.UseAuthorization(); /* Guard 2 - Are they allowed to do this? 
+                                     * Looks at whatever [Authorize] says compares the required role
+                                     against what Guard 1 found, lets the request through, or blocks it */
+
+
             app.MapControllers();
             app.Run();
         }

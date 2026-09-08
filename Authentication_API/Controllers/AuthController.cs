@@ -7,13 +7,15 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-
 [ApiController]
 [Route("api/[controller]")]
 public class AuthController : Controller
-{  //https://andrewlock.net/exploring-the-asp-net-core-identity-passwordhasher/
+{  
+    //https://andrewlock.net/exploring-the-asp-net-core-identity-passwordhasher/
 
     private readonly AppDbContext _context;
+
+    //PasswordHashed requires a class object to be passed to it on which the hashing will be done
     private readonly PasswordHasher<User> _hasher = new(); //in built salt and hasher 
 
     public AuthController(AppDbContext context)
@@ -22,12 +24,13 @@ public class AuthController : Controller
     }
 
     [HttpPost("register")]
-    public IActionResult Register(RegisterDto dto)
+    public IActionResult Register(RegisterDto dto) //uses the data object for register (email, password and role)
     {
-        var user = new User { Email = dto.Email, Role = dto.Role };
-        user.PasswordHash = _hasher.HashPassword(user, dto.Password);//using inbuilt hashing method hash the password
+        //actual User object is created using the user input from RegisterDto
+        var newUser = new User { Email = dto.Email, Role = dto.Role };
+        newUser.PasswordHash = _hasher.HashPassword(newUser, dto.Password);//using inbuilt hashing method hash the password
 
-        _context.Users.Add(user); //store the hashed password to the db
+        _context.Users.Add(newUser); //store the hashed password to the db
         _context.SaveChanges();
         return Ok("Registered");
     }
