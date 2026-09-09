@@ -36,7 +36,7 @@ public class AuthController : Controller
     }
 
     /* Step 1: 
-     * Runs when the MVC client sends a request to this endpoint 
+     * Runs when the client sends a request to this endpoint 
      * This endpoint checks if the password sent is correct and creates a cookie on line 68
      *  */
     [HttpPost("login")]

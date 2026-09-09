@@ -30,14 +30,8 @@ namespace Authentication_API
                 app.UseSwaggerUI();
             }
             //2 guards set up that check at every request before it reaches controllers
-            app.UseAuthentication();/* Guard 1 - Who is this? Looks at the incoming request's Cookie header
-                                    if there is, decrypts it and uses it to set who the current request's user is (teacher/student) */
-
-            app.UseAuthorization(); /* Guard 2 - Are they allowed to do this? 
-                                     * Looks at whatever [Authorize] says compares the required role
-                                     against what Guard 1 found, lets the request through, or blocks it */
-
-
+            app.UseAuthentication();//Who is this person? 
+            app.UseAuthorization(); //What can this person do
             app.MapControllers();
             app.Run();
         }
