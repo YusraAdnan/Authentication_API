@@ -5,7 +5,7 @@ namespace Authentication_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TeacherController : Controller
+    public class TeacherController : ControllerBase
     {
         [Authorize(Roles = "Teacher")]
         [HttpGet("teacher-only")]

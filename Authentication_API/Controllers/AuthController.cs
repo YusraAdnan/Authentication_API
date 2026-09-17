@@ -36,7 +36,7 @@ public class AuthController : Controller
     }
 
     /* Step 1: 
-     * Runs when the client sends a request to this endpoint 
+     * Runs when the client (mvc) sends a request to this endpoint 
      * This endpoint checks if the password sent is correct and creates a cookie on line 68
      *  */
     [HttpPost("login")]
@@ -73,7 +73,8 @@ public class AuthController : Controller
          * and create a cookie with the encrypted details of the user */
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(identity));
 
-        return Ok("Logged in");
+        // return Ok("Logged in");
+        return Ok(new { Role = user.Role });
     }
 
     [HttpPost("logout")] //clears the users cookie
